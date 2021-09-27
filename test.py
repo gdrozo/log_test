@@ -31,7 +31,7 @@ f_num=0
 hours_so_far=0
 run_time_limit = 100    #Suppose you only want to take a log for 100 hours while you are away.
 while keep_running:
-    ngrep_cmd = "sudo ngrep -ixW >  net_log_" + str(f_num) + ".txt &"
+    ngrep_cmd = "sudo ngrep -W byline port 8 >  net_log_" + str(f_num) + ".txt &"
     subprocess.call([ngrep_cmd], shell=True)
     time.sleep(run_hours*3600)
     subprocess.call(["sudo killall ngrep"], shell=True)
