@@ -9,7 +9,8 @@ run_time_limit = 100    #Suppose you only want to take a log for 100 hours while
 def run():
     ngrep_cmd = "sudo ngrep -W byline port 80> test_result.txt"
     print('running process')
-    subprocess.call(ngrep_cmd, shell=True)
+    result = subprocess.call(ngrep_cmd, shell=True)
+    print(result)
 
 t = threading.Thread(target=run)
 t.start()
