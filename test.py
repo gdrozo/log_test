@@ -11,7 +11,7 @@ def capture():
     ngrep_cmd = "sudo iptraf-ng -d ens33>test_result.txt"
     print('running process')
     try:
-        result = subprocess.check_output([ngrep_cmd], shell=True, stderr=subprocess.STDOUT, timeout=run_hours*3600)
+        result = subprocess.check_output([ngrep_cmd], shell=True, stderr=subprocess.STDOUT)
         print(result)
     except error as e:
         print(e.output)
@@ -21,5 +21,5 @@ t.start()
 print('Sleeping')
 time.sleep(run_hours*3600)
 #print('Killing the process')
-subprocess.call("sudo killall iptraf", shell=True)
+subprocess.call("sudo killall iptraf-ng", shell=True)
 print('done')
