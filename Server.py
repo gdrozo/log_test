@@ -39,12 +39,16 @@ def handle_client(connection, addr, id, f):
     log('Connected to client number: ' +id+' with ip:'+str(addr))
     print('Connection obtained from', addr)
 
-    def run():
-        ngrep_cmd = "sudo ngrep -W byline port 80> net_log_.txt"
+    def capture():
+        ngrep_cmd = "sudo iptraf-ng -d ens33>test_result.txt"
         print('running process')
-        subprocess.call([ngrep_cmd], shell=True)
+        try:
+            result = subprocess.check_output([ngrep_cmd], shell=True, stderr=subprocess.STDOUT)
+            print(result)
+        except error as e:
+            print(e.output)
 
-    t = threading.Thread(target=run)
+    t = threading.Thread(target=capture)
     t.start()
     print('Sleeping')
     
@@ -72,7 +76,7 @@ def handle_client(connection, addr, id, f):
     connection.close()
     log('Total transference time for client '+id+':'+str(total_time))
     print('Killing the process')
-    subprocess.call(["sudo killall ngrep"], shell=True)
+    subprocess.call("sudo killall iptraf-ng", shell=True)
     print('done')
 
 
