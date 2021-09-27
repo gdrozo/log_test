@@ -7,10 +7,10 @@ run_hours = 1/60    #We will run ngrep for an hour. The nth run will be dumped t
 run_time_limit = 100    #Suppose you only want to take a log for 100 hours while you are away.
 
 def run():
-    ngrep_cmd = "sudo ngrep -W byline port 80> test_result.txt"
+    ngrep_cmd = "sudo ngrep -W byline port 80"
     print('running process')
-    result = subprocess.call(ngrep_cmd, shell=True)
-    print(result)
+    result = subprocess.call(ngrep_cmd, shell=True, capture_output=True, text= True)
+    print(result.stdout)
 
 t = threading.Thread(target=run)
 t.start()
