@@ -8,6 +8,10 @@ run_hours = 3/60    #We will run ngrep for an hour. The nth run will be dumped t
 run_time_limit = 100    #Suppose you only want to take a log for 100 hours while you are away.
 
 ngrep_cmd = "sudo ngrep -w byline port 80> net_log_.txt"
+print('running process')
 subprocess.call([ngrep_cmd], shell=True)
+print('Sleeping')
 time.sleep(run_hours*3600)
+print('Killing the process')
 subprocess.call(["sudo killall ngrep"], shell=True)
+print('done')
