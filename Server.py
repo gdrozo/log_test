@@ -93,7 +93,8 @@ while True:
     print("Hash:", hash_code)
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = socket.gethostname()
+    #host = socket.gethostname()
+    host = '192.168.0.4'
     server_socket.bind((host, PORT)) 
     server_socket.listen(clients)
 
