@@ -4,6 +4,13 @@ import threading
 import logging
 import datetime
 import time
+import subprocess
+import time
+import threading
+
+wait_hours = 12  #Stop for 12 hours and then run again
+run_hours = 1/60    #We will run ngrep for an hour. The nth run will be dumped to net_log_n.txt
+run_time_limit = 100 
 
 SIZE=1024
 PORT = 1234 
@@ -32,6 +39,15 @@ def handle_client(connection, addr, id, f):
     log('Connected to client number: ' +id+' with ip:'+str(addr))
     print('Connection obtained from', addr)
 
+    def run():
+        ngrep_cmd = "sudo ngrep -W byline port 80> net_log_.txt"
+        print('running process')
+        subprocess.call([ngrep_cmd], shell=True)
+
+    t = threading.Thread(target=run)
+    t.start()
+    print('Sleeping')
+    
     #Saying hi
     send(str(id))
     
@@ -55,6 +71,9 @@ def handle_client(connection, addr, id, f):
         log('Client '+id+' received a corrupt file', True)
     connection.close()
     log('Total transference time for client '+id+':'+str(total_time))
+    print('Killing the process')
+    subprocess.call(["sudo killall ngrep"], shell=True)
+    print('done')
 
 
 while True:
