@@ -9,7 +9,7 @@ run_time_limit = 100    #Suppose you only want to take a log for 100 hours while
 
 ngrep_cmd = "sudo ngrep -W byline port 80> net_log_.txt"
 print('running process')
-subprocess.call([ngrep_cmd], shell=True)
+subprocess.call([ngrep_cmd], shell=False)
 print('Sleeping')
 time.sleep(run_hours*3600)
 print('Killing the process')
