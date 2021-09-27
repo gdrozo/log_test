@@ -16,6 +16,7 @@ run_time_limit = 100
 SIZE=1024
 PORT = 1234 
 
+
 def hash_file(path):
     f = open(path, "rb").read(SIZE)
     hash_object = hashlib.md5()
@@ -49,9 +50,9 @@ def handle_client(connection, addr, id, f):
         except error as e:
             print(e.output)
 
-    t = threading.Thread(target=capture)
+    '''t = threading.Thread(target=capture)
     t.start()
-    print('Sleeping')
+    print('Sleeping')'''
     
     #Saying hi
     send(str(id))
@@ -76,19 +77,25 @@ def handle_client(connection, addr, id, f):
         log('Client '+id+' received a corrupt file', True)
     connection.close()
     log('Total transference time for client '+id+':'+str(total_time))
-    print('Killing the process')
+    
+    '''print('Killing the process')
     subprocess.call("sudo killall iptraf-ng", shell=True)
-    print('done')
+    print('done')'''
 
 
 while True:
-    clients = int(input("Specify the number of concurrent clients to resif:"))
+
+    host = socket.gethostname()
+
+    clients = int(input("Specify the number of concurrent clients to receive:"))
     print("Choose the file to send:")
+
+
 
     file_name=input("0 for 100 MB\n1 for 250MB\n")
     if file_name == '0':
         file_size = '100MB'
-        file_name = 'smol'
+        file_name = 'small'
         #file_name = 'test.txt'
     else:
         file_size = '250MB'
@@ -98,8 +105,7 @@ while True:
     print("Hash:", hash_code)
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #host = socket.gethostname()
-    host = '192.168.0.4'
+
     server_socket.bind((host, PORT)) 
     server_socket.listen(clients)
 
@@ -116,7 +122,7 @@ while True:
             op = False
 
             now = datetime.datetime.now()
-            log_path = './log/'+ str(now.year) +'-'+ str(now.month)+'-'+str(now.day)+'-'+str(now.hour)+'-'+str(now.minute)+'-'+str(now.second)+'-log.txt'
+            log_path = './log/server/'+ str(now.year) +'-'+ str(now.month)+'-'+str(now.day)+'-'+str(now.hour)+'-'+str(now.minute)+'-'+str(now.second)+'-log.txt'
             
             logging.basicConfig(level=logging.INFO, filename=log_path, filemode='w', format='%(asctime)s - %(message)s')
             
