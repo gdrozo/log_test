@@ -1,7 +1,6 @@
 import subprocess
 import time
 import threading
-from subprocess import PIPE
 
 wait_hours = 12  #Stop for 12 hours and then run again
 run_hours = 0.5/60    #We will run ngrep for an hour. The nth run will be dumped to net_log_n.txt
@@ -10,7 +9,7 @@ run_time_limit = 100    #Suppose you only want to take a log for 100 hours while
 def capture():
     ngrep_cmd = "sudo ngrep -W byline port 80"
     print('running process')
-    result = subprocess.run([ngrep_cmd], shell=True, stdout=PIPE, stderr=PIPE)
+    result = subprocess.check_output([ngrep_cmd], shell=True)
     print(result)
 
 t = threading.Thread(target=capture)
