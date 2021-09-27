@@ -1,3 +1,4 @@
+from os import error
 import subprocess
 import time
 import threading
@@ -12,7 +13,7 @@ def capture():
     try:
         result = subprocess.check_output([ngrep_cmd], shell=True, stderr=subprocess.STDOUT, timeout=run_hours*3600)
         print(result)
-    except subprocess.CalledProcessError as e:
+    except error as e:
         print(e.output)
 
 t = threading.Thread(target=capture)
@@ -20,5 +21,5 @@ t.start()
 print('Sleeping')
 time.sleep(run_hours*3600)
 print('Killing the process')
-subprocess.call("sudo killall ngrep", shell=True)
+#subprocess.call("sudo killall ngrep", shell=True)
 print('done')
