@@ -3,7 +3,7 @@ import time
 import threading
 
 wait_hours = 12  #Stop for 12 hours and then run again
-run_hours = 1/60    #We will run ngrep for an hour. The nth run will be dumped to net_log_n.txt
+run_hours = 0.5/60    #We will run ngrep for an hour. The nth run will be dumped to net_log_n.txt
 run_time_limit = 100    #Suppose you only want to take a log for 100 hours while you are away.
 
 def run():
