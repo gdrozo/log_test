@@ -1,3 +1,4 @@
+import os
 import socket 
 import hashlib
 import threading
@@ -7,6 +8,7 @@ import time
 import subprocess
 import time
 import threading
+import pyshark
 from os import error
 
 wait_hours = 12  #Stop for 12 hours and then run again
@@ -41,18 +43,14 @@ def handle_client(connection, addr, id, f):
     log('Connected to client number: ' +id+' with ip:'+str(addr))
     print('Connection obtained from', addr)
 
-    def capture():
-        ngrep_cmd = "sudo iptraf-ng -d ens33>test_result.txt"
-        print('running process')
-        try:
-            result = subprocess.check_output([ngrep_cmd], shell=True, stderr=subprocess.STDOUT)
-            print(result)
-        except error as e:
-            print(e.output)
+    def capture(timeout=60):
+        capture = pyshark.LiveCapture(output_file='./result.pcap')
+        capture.clear()
+        capture.close()
 
-    '''t = threading.Thread(target=capture)
+    t = threading.Thread(target=capture)
     t.start()
-    print('Sleeping')'''
+    print('Starting pyshark')
     
     #Saying hi
     send(str(id))
@@ -78,9 +76,9 @@ def handle_client(connection, addr, id, f):
     connection.close()
     log('Total transference time for client '+id+':'+str(total_time))
     
-    '''print('Killing the process')
-    subprocess.call("sudo killall iptraf-ng", shell=True)
-    print('done')'''
+    print('Killing pyshark')
+    
+    print('done')
 
 
 while True:
