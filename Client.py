@@ -34,7 +34,8 @@ def log(message, error=False):
 while True:
     hr = input("Do you wanna use the host name as host ip? (Y|N):")
     host = socket.gethostname()
-    host = "192.168.0.6"
+    #IP goes here -----------------------------------------------------
+    host = ""
 
     if hr == 'N' or hr == 'n' or hr=='no':
         host = input("Specify the host ip:")
