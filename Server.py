@@ -106,7 +106,7 @@ while True:
 
     server_socket.bind((host, PORT)) 
     server_socket.listen(clients)
-
+    print('bind done')
     threads = []
     op = True
     i = 0
