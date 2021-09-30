@@ -84,11 +84,9 @@ def handle_client(connection, addr, id, f):
 while True:
 
     host = socket.gethostname()
-    print('host', socket.gethostbyname(host))
-
-    print('host', socket.gethostbyname(host + ".local"))
+    host = socket.gethostbyname(host + ".local")
     #IP goes here -----------------------------------------------------
-    host = ""
+
     
     clients = int(input("Specify the number of concurrent clients to receive:"))
     print("Choose the file to send:")
