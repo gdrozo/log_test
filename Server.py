@@ -84,7 +84,7 @@ def handle_client(connection, addr, id, f):
 while True:
 
     host = socket.gethostname()
-    print('host', host)
+    print('host', host[0])
     #IP goes here -----------------------------------------------------
     host = ""
     
