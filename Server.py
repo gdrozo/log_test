@@ -49,8 +49,8 @@ def handle_client(connection, addr, id, f):
         capture.close()
 
     t = threading.Thread(target=capture)
-    t.start()
-    print('Starting pyshark')
+    #t.start()
+    #print('Starting pyshark')
     
     #Saying hi
     send(str(id))
@@ -76,17 +76,13 @@ def handle_client(connection, addr, id, f):
     connection.close()
     log('Total transference time for client '+id+':'+str(total_time))
     
-    print('Killing pyshark')
+    #print('Killing pyshark')
     
     print('done')
 
 
+
 while True:
-
-    host = socket.gethostname()
-    host = socket.gethostbyname(host + ".local")
-    #IP goes here -----------------------------------------------------
-
     
     clients = int(input("Specify the number of concurrent clients to receive:"))
     print("Choose the file to send:")
@@ -104,10 +100,12 @@ while True:
     print("Hash:", hash_code)
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    host = socket.gethostname()
+    host = socket.gethostbyname(host + ".local")
+    print('Listening on ip ', host)
     server_socket.bind((host, PORT)) 
     server_socket.listen(clients)
-    print('bind done')
+    print('Bind done')
     threads = []
     op = True
     i = 0
