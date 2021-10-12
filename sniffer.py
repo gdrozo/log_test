@@ -1,4 +1,5 @@
 import threading
+import time
 import pyshark
 import subprocess
 from pyshark.capture.capture import Capture
@@ -32,6 +33,7 @@ def sniff(INTERFACE, PORT):
 def killAll():
     global running
     running = False
+    time.sleep(2) 
     subprocess.call(['sudo',  'killall', 'tshark'])
 
     
