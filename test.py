@@ -1,7 +1,7 @@
 import pyshark
 
 
-INTERFACE = ''
+INTERFACE = 'ens33'
 PORT = '1234' 
 
 capture = pyshark.LiveCapture(interface=INTERFACE)
