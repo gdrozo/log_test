@@ -9,7 +9,7 @@ for raw_packet in capture.sniff_continuously():
 
     i = 0
     # filter only UDP packet
-    if hasattr(raw_packet, 'udp') and raw_packet[raw_packet.transport_layer].srcport == PORT:
+    if hasattr(raw_packet, 'udp') #and raw_packet[raw_packet.transport_layer].srcport == PORT:
         i += 1
         # Get the details for the packets by accessing
         # _all_fields and _all_fields.values()
