@@ -49,7 +49,7 @@ while True:
         def receive():
             return connection.recv(SIZE).decode(encoding="ascii", errors="ignore")
 
-        connection = socket(AF_INET, SOCK_DGRAM)
+        connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         connection.connect((host, port)) 
         print("Connected")
         print("Waiting for confirmation")
