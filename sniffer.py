@@ -29,6 +29,9 @@ def sniff(INTERFACE, PORT):
     thread.start()
 
 def killAll():
-    capture.close()
-    subprocess.call(['sudo',  'killall', 'tshark'])
+    try:
+        capture.close()
+        subprocess.call(['sudo',  'killall', 'tshark'])
+    except:
+        pass
     
