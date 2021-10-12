@@ -14,14 +14,17 @@ def capturePackages(INTERFACE, PORT):
     global capture
 
     capture = pyshark.LiveCapture(interface=INTERFACE)
-    for raw_packet in capture.sniff_continuously():
-        if not running:
-            break
-        # filter only UDP packet
-        if hasattr(raw_packet, 'udp') and raw_packet[raw_packet.transport_layer].srcport == PORT:
-            i += 1
-            total_length += raw_packet.udp.length
-            # print('package-', i, ' size:'+length)
+    try:
+        for raw_packet in capture.sniff_continuously():
+            if not running:
+                break
+            # filter only UDP packet
+            if hasattr(raw_packet, 'udp') and raw_packet[raw_packet.transport_layer].srcport == PORT:
+                i += 1
+                total_length += raw_packet.udp.length
+                # print('package-', i, ' size:'+length)
+    except: 
+        pass
 
 def getResults():
     return i, total_length
@@ -31,11 +34,8 @@ def sniff(INTERFACE, PORT):
     thread.start()
 
 def killAll():
-    global running
-    print('stopping')
+    global runnings
     running = False
-    time.sleep(2) 
-    print('killing')
     subprocess.call(['sudo',  'killall', 'tshark'])
 
     
