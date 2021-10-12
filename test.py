@@ -8,8 +8,8 @@ capture = pyshark.LiveCapture(interface=INTERFACE)
 for raw_packet in capture.sniff_continuously():
 
    # filter only UDP packet
-   if hasattr(raw_packet, 'udp') and raw_packet[raw_packet.transport_layer].srcport == PORT:
-
+   #if hasattr(raw_packet, 'udp') and raw_packet[raw_packet.transport_layer].srcport == PORT:
+    if True:
      # Get the details for the packets by accessing
      # _all_fields and _all_fields.values()
      field_names = raw_packet.udp._all_fields
