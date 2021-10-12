@@ -8,12 +8,7 @@ import time
 import subprocess
 import time
 import threading
-import pyshark
-from os import error
-
-wait_hours = 12  #Stop for 12 hours and then run again
-run_hours = 1/60    #We will run ngrep for an hour. The nth run will be dumped to net_log_n.txt
-run_time_limit = 100 
+import sniffer
 
 SIZE=1024
 PORT = 1234 
@@ -31,8 +26,6 @@ def log(message, error=False):
     else:
         logging.error(message)
 
-
-
 def handle_client(connection, addr, id, f):
     def send(message):
         connection.send(message.encode(encoding='ascii', errors='ignore'))
@@ -42,15 +35,6 @@ def handle_client(connection, addr, id, f):
     
     log('Connected to client number: ' +id+' with ip:'+str(addr))
     print('Connection obtained from', addr)
-
-    def capture(timeout=60):
-        capture = pyshark.LiveCapture(output_file='./result.pcap')
-        capture.clear()
-        capture.close()
-
-    t = threading.Thread(target=capture)
-    #t.start()
-    #print('Starting pyshark')
     
     #Saying hi
     send(str(id))
@@ -76,10 +60,7 @@ def handle_client(connection, addr, id, f):
     connection.close()
     log('Total transference time for client '+id+':'+str(total_time))
     
-    #print('Killing pyshark')
-    
     print('done')
-
 
 
 while True:
@@ -100,12 +81,14 @@ while True:
     print("Hash:", hash_code)
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
     host = socket.gethostname()
     host = socket.gethostbyname(host + ".local")
-    print('Listening on ip ', host)
+    
+    print('Listening on ', host)
     server_socket.bind((host, PORT)) 
     server_socket.listen(clients)
-    print('Bind done')
+
     threads = []
     op = True
     i = 0
@@ -116,6 +99,9 @@ while True:
         threads.append(thread)
 
         if i >= clients:
+
+            sniffer.sniff('ens33', PORT)
+
             op = False
 
             now = datetime.datetime.now()
@@ -130,3 +116,6 @@ while True:
                 t.start()
             for t in threads:
                 t.join()
+            
+            sniffer.killAll()
+            print('Total Size:', sniffer.getResults())
