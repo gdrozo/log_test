@@ -1,5 +1,6 @@
 import os
-import socket 
+from socket import *
+import socket
 import hashlib
 import threading
 import logging
@@ -80,7 +81,7 @@ while True:
     f, hash_code = hash_file(file_name)
     print("Hash:", hash_code)
 
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket = socket(AF_INET, SOCK_DGRAM)
     
     host = socket.gethostname()
     host = socket.gethostbyname(host + ".local")
