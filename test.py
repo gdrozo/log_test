@@ -1,25 +1,26 @@
-from os import error
-import subprocess
-import time
-import threading
+import pyshark
 
-wait_hours = 12  #Stop for 12 hours and then run again
-run_hours = 1/60    #We will run ngrep for an hour. The nth run will be dumped to net_log_n.txt
-run_time_limit = 100    #Suppose you only want to take a log for 100 hours while you are away.
 
-def capture():
-    ngrep_cmd = "sudo iptraf-ng -d ens33>test_result.txt"
-    print('running process')
-    try:
-        result = subprocess.check_output([ngrep_cmd], shell=True, stderr=subprocess.STDOUT)
-        print(result)
-    except error as e:
-        print(e.output)
+INTERFACE = ''
+PORT = '1234' 
 
-t = threading.Thread(target=capture)
-t.start()
-print('Sleeping')
-time.sleep(run_hours*3600)
-#print('Killing the process')
-subprocess.call("sudo killall iptraf-ng", shell=True)
-print('done')
+capture = pyshark.LiveCapture(interface=INTERFACE)
+for raw_packet in capture.sniff_continuously():
+
+   # filter only UDP packet
+   if hasattr(raw_packet, 'udp') and packet[packet.transport_layer].srcport == PORT:
+
+     # Get the details for the packets by accessing
+     # _all_fields and _all_fields.values()
+     field_names = raw_packet.udp._all_fields
+     field_values = raw_packet.udp._all_fields.values()
+     for field_name in field_names:
+        for field_value in field_values:
+           # you can add another filter here to get your 
+           # lat & long coordinates 
+           print(f'{field_name} -- {field_value}')
+
+     # if you need to access the packet data you need to do this,
+     # but it might come back in hex, which will need to be decoded. 
+     # if "DATA" in str(packet.layers):
+     #   print(packet.data.data)
