@@ -5,10 +5,12 @@ from pyshark.capture.capture import Capture
 
 i= 0
 total_length = 0
+capture = True
 
-def capture(INTERFACE, PORT):
+def capturePackages(INTERFACE, PORT):
     global i
     global total_length
+    global capture
 
     capture = pyshark.LiveCapture(interface=INTERFACE)
     for raw_packet in capture.sniff_continuously():
@@ -23,9 +25,10 @@ def getResults():
     return i, total_length
 
 def sniff(INTERFACE, PORT):
-    thread = threading.Thread(target= capture, args=(INTERFACE, PORT))
+    thread = threading.Thread(target= capturePackages, args=(INTERFACE, PORT))
     thread.start()
 
 def killAll():
+    capture.close()
     subprocess.call(['sudo',  'killall', 'tshark'])
     
