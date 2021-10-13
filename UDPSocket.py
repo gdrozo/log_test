@@ -43,23 +43,23 @@ class individualSocket:
     def activeListen(self):
         while self.open:
             if len(self.cWaiting) > 0 or self.isWaitting:
-                # # print('someone is waiting')
+                # print('someone is waiting')
                 #self.lock.acquire()
                 m, addr = self.server_socket.recvfrom(self.PACKET)
-                # print('Message',m.decode(encoding='ascii', errors='ignore'),'recive from', addr)
+                print('Message',m.decode(encoding='ascii', errors='ignore'),'recive from', addr)
                 #self.lock.release()
                 t = str(addr[0]) + str(addr[1])
                 if not self.isWaitting: 
                     lock = self.cWaiting[t]
                     del self.cWaiting[t]
                     self.messages[t] = m
-                    # print('returning a message')
+                    print('returning a message')
                     lock.release()
                 else:
-                    # print('Accepting a guest')
+                    print('Accepting a guest')
                     self.addr = addr
                     self.isWaitting = False
-                    # print('Releasing the waiting lock')
+                    print('Releasing the waiting lock')
                     self.waitting.release()
                     #self.waitting.acquire()
                     
@@ -83,19 +83,19 @@ class individualSocket:
 
     def accept(self):
         self.isWaitting = True
-        # print('waiting for a guest')
+        print('waiting for a guest')
         self.waitting.acquire()
-        # print('First lock')
+        print('First lock')
         self.waitting.acquire()
         self.waitting.release()
-        # print('Guest was been accepted')
-        # print(self.addr)
+        print('Guest was been accepted')
+        print(self.addr)
         c = connetion(self, self.addr)
         self.connetions.append(c)
         return c, self.addr
 
     def send(self, message, addr):
-        # print('trying to send', message, 'to', addr)
+        print('trying to send', message, 'to', addr)
         self.lock.acquire()
         self.server_socket.sendto(message, addr)
         self.lock.release()
@@ -103,10 +103,10 @@ class individualSocket:
     def recv(self, addr, lock):
         t = str(addr[0]) + str(addr[1])
         self.cWaiting[t] = lock
-        # print('waiting for a message')
+        print('waiting for a message')
         #Blocking 
         lock.acquire()
-        # print('Message received')
+        print('Message received')
         r = self.messages[t]
         del self.messages[t]
         return r
