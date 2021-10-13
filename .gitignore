@@ -1,7 +1,8 @@
 Data
 Connector.py
 test.txt
-test.py
 big
 log
 ArchivosRecibidos
+__pycache__
+test.py

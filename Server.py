@@ -1,11 +1,8 @@
-import os
-import socket
+import UDPSocket as socket
 import hashlib
 import threading
 import logging
 import datetime
-import time
-import subprocess
 import time
 import threading
 import sniffer
@@ -31,7 +28,7 @@ def handle_client(connection, addr, id, f):
         connection.send(message.encode(encoding='ascii', errors='ignore'))
 
     def receive():
-        return connection.recv(SIZE).decode(encoding="ascii", errors="ignore")
+        return connection.recv().decode(encoding="ascii", errors="ignore")
     
     log('Connected to client number: ' +id+' with ip:'+str(addr))
     print('Connection obtained from', addr)

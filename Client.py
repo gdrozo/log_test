@@ -1,5 +1,6 @@
 import datetime
-import socket
+import UDPSocket as socket
+
 import hashlib
 import threading
 import logging
@@ -47,10 +48,10 @@ while True:
             connection.send(message.encode(encoding='ascii', errors='ignore'))
 
         def receive():
-            return connection.recv(SIZE).decode(encoding="ascii", errors="ignore")
+            return connection.recv().decode(encoding="ascii", errors="ignore")
 
         connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        connection.connect((host, port)) 
+        connection = connection.connect((host, port)) 
         print("Connected")
         print("Waiting for confirmation")
 
@@ -68,7 +69,7 @@ while True:
 
         #Waiting for the file
         start_time = time.time()
-        data = connection.recv(SIZE)
+        data = connection.recv()
         generated_hash_code = hash_file(data)
 
         if received_hash_code != generated_hash_code:
